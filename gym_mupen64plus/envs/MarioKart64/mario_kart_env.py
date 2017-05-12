@@ -22,8 +22,8 @@ class MarioKartEnv(Mupen64PlusEnv):
 
     END_EPISODE_THRESHOLD = 30
 
-    PLAYER_ROW = 0
-    PLAYER_COL = 0
+    PLAYER_ROW = 1
+    PLAYER_COL = 1
 
     MAP_SERIES = 0
     MAP_CHOICE = 0
@@ -114,10 +114,13 @@ class MarioKartEnv(Mupen64PlusEnv):
             # 230 - Select map choice
             # 232 - OK
             # 284 - <Level loaded; turn over control>
-            if frame in [10, 80, 120, 130, 132, 134, 160, 162, 202, 230, 232]:
+            if frame in [10, 80, 130, 134, 160, 162, 164, 202, 230, 232]:
                 action = ControllerState.A_BUTTON
             elif frame in [125]:
                 action = ControllerState.JOYSTICK_DOWN
+
+            if frame == 120 or frame == 122:
+				action = ControllerState.JOYSTICK_RIGHT
 
             # Frame 150 is the 'Player Select' screen
             if frame == 150:
