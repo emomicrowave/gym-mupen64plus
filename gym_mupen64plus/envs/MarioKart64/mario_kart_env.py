@@ -22,8 +22,8 @@ class MarioKartEnv(Mupen64PlusEnv):
 
     END_EPISODE_THRESHOLD = 30
 
-    PLAYER_ROW = 0
-    PLAYER_COL = 0
+    PLAYER_ROW = 1
+    PLAYER_COL = 1
 
     MAP_SERIES = 0
     MAP_CHOICE = 0
@@ -98,10 +98,8 @@ class MarioKartEnv(Mupen64PlusEnv):
         cur_row = 0
         cur_col = 0
 
-        while frame < 580:
+        while frame < 284:
             action = ControllerState.NO_OP
-            print(frame)
-			# MULTIPLY FRAMES BY 2 IF USING 2 CONTROLLERS
 
             #  10 - Nintendo screen
             #  80 - Mario Kart splash screen
@@ -116,17 +114,18 @@ class MarioKartEnv(Mupen64PlusEnv):
             # 230 - Select map choice
             # 232 - OK
             # 284 - <Level loaded; turn over control>
-            #if frame in [10, 80, 130, 134, 160, 162, 164, 202, 230, 232]:
-            if frame in [20,160, 260, 268, 320, 324, 328,332, 404, 460, 464]:
+            if frame in [10, 80, 130, 134, 160, 162, 164, 202, 230, 232]:
                 action = ControllerState.A_BUTTON
-            elif frame in [250]:
+            elif frame in [125]:
                 action = ControllerState.JOYSTICK_DOWN
 
-            if frame == 230:
+            if frame == 120 or frame == 122:
 				action = ControllerState.JOYSTICK_RIGHT
+            if frame == 124:
+                action = ControllerState.JOYSTICK_LEFT
 
             # Frame 150 is the 'Player Select' screen
-            if frame == 300:
+            if frame == 150:
                 print('Player row: ', str(self.PLAYER_ROW))
                 print('Player col: ', str(self.PLAYER_COL))
 
@@ -134,24 +133,24 @@ class MarioKartEnv(Mupen64PlusEnv):
                     action = ControllerState.JOYSTICK_DOWN
                     cur_row += 1
 
-            if frame in range(302, 312) and frame % 4 == 0:
+            if frame in range(151, 156) and frame % 2 == 0:
                 if cur_col != self.PLAYER_COL:
                     action = ControllerState.JOYSTICK_RIGHT
                     cur_col += 1
 
             # Frame 195 is the 'Map Select' screen
-            if frame == 392:
+            if frame == 195:
                 cur_row = 0
                 cur_col = 0
                 print('Map series: ', str(self.MAP_SERIES))
                 print('Map choice: ', str(self.MAP_CHOICE))
 
-            if frame in range(400, 420) and frame %4 == 0:
+            if frame in range(195, 202) and frame %2 == 0:
                 if cur_col != self.MAP_SERIES:
                     action = ControllerState.JOYSTICK_RIGHT
                     cur_col += 1
 
-            if frame in range(420, 460) and frame %4 == 0:
+            if frame in range(223, 230) and frame %2 == 0:
                 if cur_row != self.MAP_CHOICE:
                     action = ControllerState.JOYSTICK_DOWN
                     cur_row += 1
@@ -159,12 +158,12 @@ class MarioKartEnv(Mupen64PlusEnv):
             if action != ControllerState.NO_OP:
                 print('Frame ', str(frame), ': ', str(action))
 
-            self.controller_server.send_controls(action)
+            self.controller_server.send_controls([action, action])
             frame += 1
 
     def _navigate_post_race_menu(self):
         frame = 0
-        while frame < 300:
+        while frame < 138:
             action = ControllerState.NO_OP
 
             # Post race menu (previous choice selected by default)

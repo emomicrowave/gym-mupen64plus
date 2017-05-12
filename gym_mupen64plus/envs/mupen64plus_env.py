@@ -294,19 +294,33 @@ class ControllerState(object):
     def to_json(self):
         return json.dumps(self.__dict__)
 
+    def to_json_alt(self):
+        temp = {"START_BUTTON": self.START_BUTTON,
+                "X_AXIS": self.X_AXIS,
+                "Y_AXIS": self.Y_AXIS,
+                "A_BUTTON": self.A_BUTTON,
+                "B_BUTTON": self.B_BUTTON,
+                "R_TRIG" : self.R_TRIG,
+                "L_TRIG" : 0,
+                "Z_TRIG" : 0
+                }
+        return temp
+
 ###############################################
 class ControllerHTTPServer(HTTPServer, object):
 
     def __init__(self, server_address, control_timeout):
         self.control_timeout = control_timeout
         self.controls = ControllerState()
+        self.real_controls = ControllerState() # Player Controls
         self.hold_response = True
         self.running = True
         super(ControllerHTTPServer, self).__init__(server_address, self.ControllerRequestHandler)
 
     def send_controls(self, controls, start_button=0):
         #print('Send controls called')
-        self.controls = ControllerState(controls, start_button)
+        self.controls = ControllerState(controls[0], start_button)
+        self.real_controls = ControllerState(controls[1], start_button)
         self.hold_response = False
 
         # Wait for controls to be sent:
@@ -342,7 +356,10 @@ class ControllerHTTPServer(HTTPServer, object):
                 self.write_response(500, "SHUTDOWN")
 
             ### respond with controller output
-            self.write_response(200, self.server.controls.to_json())
+            temp_responce = { "Controller0" : self.server.controls.to_json_alt(),
+                              "Controller1" : self.server.real_controls.to_json_alt()}
+            #print(type(self.server.controls.to_json()))
+            self.write_response(200, json.dumps(temp_responce))
 
             self.server.hold_response = True
             return
