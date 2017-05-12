@@ -119,10 +119,10 @@ class MarioKartEnv(Mupen64PlusEnv):
             elif frame in [125]:
                 action = ControllerState.JOYSTICK_DOWN
 
-            if frame == 120 or frame == 122:
-				action = ControllerState.JOYSTICK_RIGHT
+            #if frame == 120 or frame == 122:
+			#	action = ControllerState.JOYSTICK_RIGHT
             if frame == 124:
-                action = ControllerState.JOYSTICK_LEFT
+                action = ControllerState.JOYSTICK_RIGHT
 
             # Frame 150 is the 'Player Select' screen
             if frame == 150:
@@ -158,7 +158,7 @@ class MarioKartEnv(Mupen64PlusEnv):
             if action != ControllerState.NO_OP:
                 print('Frame ', str(frame), ': ', str(action))
 
-            self.controller_server.send_controls([action, action])
+            self.controller_server.send_controls([action, ControllerState.NO_OP])
             frame += 1
 
     def _navigate_post_race_menu(self):
@@ -183,7 +183,7 @@ class MarioKartEnv(Mupen64PlusEnv):
             if action != ControllerState.NO_OP:
                 print('Frame ', str(frame), ': ', str(action))
 
-            self.controller_server.send_controls(action)
+            self.controller_server.send_controls([action, ControllerState.NO_OP])
             frame += 1
 
     def _set_character(self, character):

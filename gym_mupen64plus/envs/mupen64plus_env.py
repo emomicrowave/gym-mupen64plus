@@ -272,14 +272,14 @@ class EmulatorMonitor:
 class ControllerState(object):
 
     # Controls
-    NO_OP = [0, 0, 0, 0, 0]
-    A_BUTTON = [0, 0, 1, 0, 0]
-    B_BUTTON = [0, 0, 0, 1, 0]
-    RB_BUTTON = [0, 0, 0, 0, 1]
-    JOYSTICK_UP = [0, 80, 0, 0, 0]
-    JOYSTICK_DOWN = [0, -80, 0, 0, 0]
-    JOYSTICK_LEFT = [-80, 0, 0, 0, 0]
-    JOYSTICK_RIGHT = [80, 0, 0, 0, 0]
+    NO_OP = [0, 0, 0, 0, 0, 0]
+    A_BUTTON = [0, 0, 1, 0, 0, 0]
+    B_BUTTON = [0, 0, 0, 1, 0, 0]
+    RB_BUTTON = [0, 0, 0, 0, 1, 0]
+    JOYSTICK_UP = [0, 80, 0, 0, 0, 0]
+    JOYSTICK_DOWN = [0, -80, 0, 0, 0, 0]
+    JOYSTICK_LEFT = [-80, 0, 0, 0, 0, 0]
+    JOYSTICK_RIGHT = [80, 0, 0, 0, 0, 0]
 
     def __init__(self, controls=NO_OP, start_button=0):
         self.START_BUTTON = start_button
@@ -289,7 +289,7 @@ class ControllerState(object):
         self.B_BUTTON = controls[3]
         self.R_TRIG = controls[4]
         self.L_TRIG = 0
-        self.Z_TRIG = 0
+        self.Z_TRIG = controls[5]
 
     def to_json(self):
         return json.dumps(self.__dict__)
@@ -301,8 +301,8 @@ class ControllerState(object):
                 "A_BUTTON": self.A_BUTTON,
                 "B_BUTTON": self.B_BUTTON,
                 "R_TRIG" : self.R_TRIG,
-                "L_TRIG" : 0,
-                "Z_TRIG" : 0
+                "L_TRIG" : self.L_TRIG,
+                "Z_TRIG" : self.Z_TRIG
                 }
         return temp
 
