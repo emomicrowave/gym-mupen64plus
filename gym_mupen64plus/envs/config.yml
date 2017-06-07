@@ -12,11 +12,11 @@ SCR_D: 3
 
 # The offset location of where the emulator window appears on screen:
 # (has no effect when using XVFB - offset is 0,0)
-OFFSET_X: 400
-OFFSET_Y: 240
+OFFSET_X: 0
+OFFSET_Y: 0
 
 # XVFB config:
-USE_XVFB: true
+USE_XVFB: false
 XVFB_CMD: Xvfb
 XVFB_DISPLAY: :1
 TMP_DIR: /dev/shm

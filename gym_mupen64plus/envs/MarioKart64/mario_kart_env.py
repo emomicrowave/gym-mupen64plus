@@ -80,8 +80,8 @@ class MarioKartEnv(Mupen64PlusEnv):
 
         upper_left = IMAGE_HELPER.GetPixelColor(pix_arr, 19, 19)
         upper_right = IMAGE_HELPER.GetPixelColor(pix_arr, 620, 19)
-        bottom_left = IMAGE_HELPER.GetPixelColor(pix_arr, 19, 460)
-        bottom_right = IMAGE_HELPER.GetPixelColor(pix_arr, 620, 460)
+        bottom_left = IMAGE_HELPER.GetPixelColor(pix_arr, 19, 230)
+        bottom_right = IMAGE_HELPER.GetPixelColor(pix_arr, 620, 230)
 
         if upper_left == upper_right == bottom_left == bottom_right:
             self.end_episode_confidence += 1

@@ -57,7 +57,7 @@ class Mupen64PlusEnv(gym.Env):
         self.episode_over = False
         self.numpy_array = None
         self.pixel_array = array.array('B', [0] * (config['SCR_W'] *
-                                                   config['SCR_H'] *
+                                                   config['SCR_H']/2 *
                                                    config['SCR_D']))
         self.controller_server, self.controller_server_thread = self._start_controller_server()
         self.xvfb_process, self.emulator_process = self._start_emulator(rom_name=rom_name)
@@ -83,7 +83,7 @@ class Mupen64PlusEnv(gym.Env):
         return obs, reward, self.episode_over, {}
 
     def _observe(self):
-        #cprint('Observe called!', 'yellow')
+        cprint('Observe called!', 'yellow')
 
         if config['USE_XVFB']:
             offset_x = 0
@@ -92,16 +92,16 @@ class Mupen64PlusEnv(gym.Env):
             offset_x = config['OFFSET_X']
             offset_y = config['OFFSET_Y']
 
-        bmp = wx.Bitmap(config['SCR_W'], config['SCR_H'])
+        bmp = wx.Bitmap(config['SCR_W'], config['SCR_H']/2)
         wx.MemoryDC(bmp).Blit(0, 0,
-                              config['SCR_W'], config['SCR_H'],
+                              config['SCR_W'], config['SCR_H']/2,
                               self.screen,
                               offset_x, offset_y)
         bmp.CopyToBuffer(self.pixel_array)
 
         self.numpy_array = np.frombuffer(self.pixel_array, dtype=np.uint8)
         self.numpy_array = \
-            self.numpy_array.reshape(config['SCR_H'], config['SCR_W'], config['SCR_D'])
+            self.numpy_array.reshape(config['SCR_H']/2, config['SCR_W'], config['SCR_D'])
 
         return self.numpy_array
 
