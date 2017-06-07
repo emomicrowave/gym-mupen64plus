@@ -13,7 +13,7 @@ SCR_D: 3
 # The offset location of where the emulator window appears on screen:
 # (has no effect when using XVFB - offset is 0,0)
 OFFSET_X: 0
-OFFSET_Y: 0
+OFFSET_Y: 25
 
 # XVFB config:
 USE_XVFB: false
