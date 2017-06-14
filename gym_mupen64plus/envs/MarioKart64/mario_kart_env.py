@@ -114,9 +114,9 @@ class MarioKartEnv(Mupen64PlusEnv):
             # 230 - Select map choice
             # 232 - OK
             # 284 - <Level loaded; turn over control>
-            if frame in [10, 80, 130, 134, 160, 162, 164, 202, 230, 232]:
+            if frame in [10, 80, 134, 160, 162, 164, 202, 230, 232]:
                 action = ControllerState.A_BUTTON
-            elif frame in [125]:
+            elif frame in [128]:
                 action = ControllerState.JOYSTICK_DOWN
 
             #if frame == 120 or frame == 122:

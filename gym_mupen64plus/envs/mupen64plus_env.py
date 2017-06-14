@@ -64,7 +64,7 @@ class Mupen64PlusEnv(gym.Env):
         self._navigate_menu()
 
         self.observation_space = \
-            spaces.Box(low=0, high=255, shape=(config['SCR_H'], config['SCR_W'], config['SCR_D']))
+            spaces.Box(low=0, high=255, shape=(config['SCR_H']/2, config['SCR_W'], config['SCR_D']))
 
         self.action_space = spaces.MultiDiscrete([[-80, 80], # Joystick X-axis
                                                   [-80, 80], # Joystick Y-axis
@@ -83,7 +83,7 @@ class Mupen64PlusEnv(gym.Env):
         return obs, reward, self.episode_over, {}
 
     def _observe(self):
-        cprint('Observe called!', 'yellow')
+        #cprint('Observe called!', 'yellow')
 
         if config['USE_XVFB']:
             offset_x = 0
@@ -98,6 +98,10 @@ class Mupen64PlusEnv(gym.Env):
                               self.screen,
                               offset_x, offset_y)
         bmp.CopyToBuffer(self.pixel_array)
+        
+        ### save image for debug purposes
+        #image_file = 'img_'+str(self.step_count)+'.png'
+        #bmp.SaveFile(image_file, wx.BITMAP_TYPE_PNG)
 
         self.numpy_array = np.frombuffer(self.pixel_array, dtype=np.uint8)
         self.numpy_array = \
